@@ -1,0 +1,16 @@
+- README, LICENSE
+- flip normal vectors?
+- render all parts of the cow
+- bouncy!
+- mouse/keyboard interaction
+- basic command line args
+
+variants:
+- zoom over a grid landscape of cows which are watching you
+- wiremesh rendering
+- N-body problems
+- "skinless" mode
+
+later:
+- merge entire cow into a single vertexbuffer (including color)
+- abstract util stuff into a helper library
