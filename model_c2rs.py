@@ -17,10 +17,11 @@ def main():
         if line.count(",") != 6:
             continue
         nums = line.strip().split(",")[:-1]
+        nums = [n.find(".") != -1 and n or n+".0" for n in nums]
         #print(nums)
         assert(len(nums) == 6)
-        vertices.append(nums[:3])
-        normals.append(nums[3:])
+        normals.append(nums[:3])
+        vertices.append(nums[3:])
     infile.close()
 
     outfile.write("""

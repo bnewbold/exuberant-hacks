@@ -5,6 +5,7 @@ extern crate image;
     
 mod util;
 mod cow_face;
+mod cow_hide;
 
 fn run() {
 
@@ -21,7 +22,7 @@ fn run() {
 
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
     let vertices = glium::VertexBuffer::new(
-        &display, &cow_face::cow_face_vertices).unwrap();
+        &display, &cow_hide::cow_hide_vertices).unwrap();
     let vertex_shader_src = r#"
         #version 140 
         
