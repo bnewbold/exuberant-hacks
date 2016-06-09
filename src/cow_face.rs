@@ -2,14 +2,9 @@
 // This file auto-generated from cow_face.c using model_c2rs.py
 // Don't edit by hand!
 
-#[derive(Copy, Clone)]
-pub struct Vertex {
-    position: (f32, f32, f32),
-    normal: (f32, f32, f32),
-}
-implement_vertex!(Vertex, position, normal);
+use cow_vertex::Vertex;
 
-pub const cow_face_vertices: [Vertex; 335] = [
+pub const COW_FACE_VERTICES: [Vertex; 335] = [
     Vertex { position: (4.897808, 1.946794, -0.628057),
              normal: (0.193291, -0.074799, -0.978286), },
     Vertex { position: (4.925394, 1.955229, -0.618837),

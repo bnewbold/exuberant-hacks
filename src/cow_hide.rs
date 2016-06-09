@@ -2,14 +2,9 @@
 // This file auto-generated from cow_hide.c using model_c2rs.py
 // Don't edit by hand!
 
-#[derive(Copy, Clone)]
-pub struct Vertex {
-    position: (f32, f32, f32),
-    normal: (f32, f32, f32),
-}
-implement_vertex!(Vertex, position, normal);
+use cow_vertex::Vertex;
 
-pub const cow_hide_vertices: [Vertex; 13049] = [
+pub const COW_HIDE_VERTICES: [Vertex; 13049] = [
     Vertex { position: (2.229345, -0.992723, -0.862826),
              normal: (-0.012663, 0.029084, -0.999497), },
     Vertex { position: (2.292449, -0.871852, -0.8824),

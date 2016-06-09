@@ -4,8 +4,13 @@ extern crate glium;
 extern crate image;
     
 mod util;
+mod cow_vertex;
 mod cow_face;
 mod cow_hide;
+mod cow_hoofs;
+mod cow_horns;
+mod cow_tail;
+mod cow_udder;
 
 fn run() {
 
@@ -21,8 +26,20 @@ fn run() {
                   .unwrap();
 
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
-    let vertices = glium::VertexBuffer::new(
-        &display, &cow_hide::cow_hide_vertices).unwrap();
+
+    let face_vertices = glium::VertexBuffer::new(
+        &display, &cow_face::COW_FACE_VERTICES).unwrap();
+    let hide_vertices = glium::VertexBuffer::new(
+        &display, &cow_hide::COW_HIDE_VERTICES).unwrap();
+    let hoofs_vertices = glium::VertexBuffer::new(
+        &display, &cow_hoofs::COW_HOOFS_VERTICES).unwrap();
+    let horns_vertices = glium::VertexBuffer::new(
+        &display, &cow_horns::COW_HORNS_VERTICES).unwrap();
+    let tail_vertices = glium::VertexBuffer::new(
+        &display, &cow_tail::COW_TAIL_VERTICES).unwrap();
+    let udder_vertices = glium::VertexBuffer::new(
+        &display, &cow_udder::COW_UDDER_VERTICES).unwrap();
+
     let vertex_shader_src = r#"
         #version 140 
         
@@ -54,9 +71,9 @@ fn run() {
 
         out vec4 color;
 
-        const vec3 ambient_color = vec3(0.2, 0.0, 0.0);
-        const vec3 diffuse_color = vec3(0.6, 0.0, 0.0);
-        const vec3 specular_color = vec3(1.0, 1.0, 1.0);
+        const vec3 ambient_color = vec3(0.63, 0.43, 0.36);
+        const vec3 diffuse_color = vec3(0.5, 0.5, 0.5);
+        const vec3 specular_color = vec3(0.0, 0.0, 0.0);
 
         void main() {
             float diffuse = max(dot(normalize(v_normal), normalize(u_light)), 0.0);
@@ -116,7 +133,8 @@ fn run() {
             view: view,
         };
 
-        target.clear_color_and_depth((0.2, 0.2, 0.2, 1.0), 1.0);
+        // Set black background
+        target.clear_color_and_depth((0.0, 0.0, 0.0, 1.0), 1.0);
 
         let params = glium::DrawParameters {
             depth: glium::Depth {
@@ -125,15 +143,23 @@ fn run() {
                 .. Default::default()
             },
             // NB: would enable if all models were "closed" ("sealed", no gaps)
-            backface_culling: glium::draw_parameters::BackfaceCullingMode::CullClockwise,
+            backface_culling: glium::draw_parameters::BackfaceCullingMode::CullCounterClockwise,
             .. Default::default()
         };
 
-        target.draw(&vertices,
-                    &indices,
-                    &program,
-                    &uniforms,
-                    &params).unwrap();
+        for part_vertices in vec![&face_vertices,
+                                  &hide_vertices,
+                                  &hoofs_vertices,
+                                  &horns_vertices,
+                                  &tail_vertices,
+                                  &udder_vertices] {
+
+            target.draw(part_vertices,
+                        &indices,
+                        &program,
+                        &uniforms,
+                        &params).unwrap();
+        }
 
         target.finish().unwrap();
 

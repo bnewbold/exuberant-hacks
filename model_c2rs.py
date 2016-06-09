@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+This script is intended to be run in the same directory as a bunch of .c files;
+it outputs .rs files.
+"""
+
 import sys
 
 def main():
@@ -28,15 +33,10 @@ def main():
 // This file auto-generated from %s.c using model_c2rs.py
 // Don't edit by hand!
 
-#[derive(Copy, Clone)]
-pub struct Vertex {
-    position: (f32, f32, f32),
-    normal: (f32, f32, f32),
-}
-implement_vertex!(Vertex, position, normal);
+use cow_vertex::Vertex;
 
-pub const %s_vertices: [Vertex; %d] = [
-""" % (fname, fname, len(vertices)))
+pub const %s_VERTICES: [Vertex; %d] = [
+""" % (fname, fname.upper(), len(vertices)))
     for i in range(len(vertices)):
         v = vertices[i]
         n = normals [i]
