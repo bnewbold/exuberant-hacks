@@ -17,7 +17,7 @@ fn run() {
     use glium::{DisplayBuild, Surface};
 
     let mut t: f32 = 0.0;
-    let mut x: f32;
+    let mut z: f32;
     
     let display = glium::glutin::WindowBuilder::new()
                   .with_title(format!("Exuberant Cow!"))
@@ -96,8 +96,8 @@ fn run() {
 
     loop {
 
-        t += 0.02;
-        x = 0.5 * t.sin();
+        t += 0.03;
+        z = 0.5 * t.sin();
 
         // Drawing Pipeline
         let mut target = display.draw();
@@ -127,7 +127,7 @@ fn run() {
                 [ 0.3, 0.0,  0.0,  0.0 ],
                 [ 0.0, 0.3,  0.0,  0.0 ],
                 [ 0.0, 0.0,  0.3,  0.0 ],
-                [   x, 0.0,  2.0,  1.0 ]],
+                [-0.5,   z,  2.0,  1.0 ]],
             u_light: light,
             perspective: perspective,
             view: view,
