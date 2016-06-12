@@ -2,6 +2,10 @@
 #[macro_use]
 extern crate glium; 
 extern crate image;
+
+use std::env;
+use std::u64;
+use glium::glutin::os::unix::WindowBuilderExt;
     
 mod util;
 mod cow_vertex;
@@ -12,18 +16,22 @@ mod cow_horns;
 mod cow_tail;
 mod cow_udder;
 
-fn run() {
+fn run(window_id: Option<u64>) {
 
     use glium::{DisplayBuild, Surface};
 
     let mut t: f32 = 0.0;
     let mut z: f32;
-    
-    let display = glium::glutin::WindowBuilder::new()
-                  .with_title(format!("Exuberant Cow!"))
-                  .with_depth_buffer(24)
-                  .build_glium()
-                  .unwrap();
+
+    let win_builder: glium::glutin::WindowBuilder = match window_id {
+        Some(id) =>
+            glium::glutin::WindowBuilder::new()
+                                         .from_existing_window(id),
+        None => glium::glutin::WindowBuilder::new()
+                                             .with_title(format!("Exuberant Cow!"))
+                                             .with_depth_buffer(24),
+    };
+    let display = win_builder.build_glium().unwrap();
 
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
 
@@ -175,5 +183,20 @@ fn run() {
 }
 
 fn main() {
-    run();
+    let args: Vec<String> = env::args().collect();
+
+    let window_id: Option<u64> = {
+        if args.len() >= 2 {
+            let parsed = if (&args[1]).starts_with("0x") {
+                u64::from_str_radix(args[1].trim_left_matches('0').trim_left_matches('x'), 16)
+            } else {
+                args[1].parse::<u64>()
+            };
+            Some(parsed.expect("Failed to parse numerical arg"))
+        } else {
+            None
+        }
+    };
+
+    run(window_id);
 }
