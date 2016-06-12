@@ -1,0 +1,35 @@
+
+The API is basically to grab the window ID from $XSCREENSAVER_WINDOW (could be
+hex or decimal) and draw to that. There are also the following command line
+options:
+
+    -root               find the "root" window for this screen and draw in it
+    -window             create an X window and draw in it
+    -window-id <arg>    draw in the given window
+    -pair
+
+Also unclear how OpenGL-based hacks differ from Xlib-based hacks (in terms of
+window selection).
+
+The code in glutin (rust) that creates a Window object is:
+
+    https://github.com/tomaka/glutin/blob/master/src/api/x11/window.rs
+    glutin/src/api/x11/window.rs:421
+
+    // getting the root window
+    let root = unsafe { (display.xlib.XDefaultRootWindow)(display.display) };
+    display.check_errors().expect("Failed to get root window");
+
+The code in XScreensaver "hacks" that seems to latch on to an existing window is:
+
+    https://github.com/Zygo/xscreensaver/blob/master2/hacks/screenhack.c#L872
+    (possible section of xscreensaver hack code dealing with window stuff?)
+
+new plan:
+- write a function that just returns a glutin::Window based on the remote X11
+  window ID
+
+old plan:
+- provide an impl on glutin::Window which constructs a new one given a root
+  window number; just copy/paste the new() implementation for now?
+  "from_existing()"?
