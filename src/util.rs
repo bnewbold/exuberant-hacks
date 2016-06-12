@@ -1,4 +1,6 @@
 
+use std::str::FromStr;
+
 pub fn view_matrix(position: &[f32; 3],
                direction: &[f32; 3],
                up: &[f32; 3]) -> [[f32; 4]; 4] {
@@ -33,4 +35,44 @@ pub fn view_matrix(position: &[f32; 3],
         [s[2], u[2], f[2], 0.0],
         [p[0], p[1], p[2], 1.0],
     ]
+}
+
+/// This little hacky function converts X-style args like "-root" to standard
+/// UNIX long-style args ("--root") that can be parsed by getopts.
+///
+/// These variant long-form args should probably be hidden from the user, eg
+/// not show up in usage or manpage output.
+pub fn convert_xscreensaver_args(raw: Vec<&str>) -> Vec<String> {
+
+    let known_args = vec!["-root",
+                          "-window",
+                          "-mono",
+                          "-install",
+                          "-noinstall",
+                          "-visual",
+                          "-window-id",
+                          "-fps",
+                          "-no-fps",
+                          "-pair",
+                          "-record-animation"];
+
+    let ret: Vec<String> = raw.into_iter().map(|arg| {
+        if known_args.contains(&arg) {
+            let mut longer = String::from_str("-").unwrap();
+            longer.push_str(arg);
+            longer
+        } else {
+            String::from_str(arg).unwrap()
+        }
+    }).collect();
+    ret
+}
+
+#[test]
+fn test_xargconv() {
+    assert_eq!(vec!["--root"], convert_xscreensaver_args(vec!["-root"]));
+    assert_eq!(vec!["--root"], convert_xscreensaver_args(vec!["--root"]));
+    assert_eq!(vec!["root"], convert_xscreensaver_args(vec!["root"]));
+    assert_eq!(vec!["-asdf"], convert_xscreensaver_args(vec!["-asdf"]));
+    assert_eq!(vec!["-h"], convert_xscreensaver_args(vec!["-h"]));
 }
