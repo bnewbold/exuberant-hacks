@@ -11,3 +11,7 @@ authors = ["bnewbold <bnewbold@robocracy.org>"]
 glium = "0.*"
 image = "0.*"
 getopts = "^0.2"
+
+[[bin]]
+name = "exuberantbovines"
+path = "src/main.rs"

@@ -199,10 +199,19 @@ fn main() {
     let args = util::convert_xscreensaver_args(args);
 
     let mut opts = Options::new();
+
+    // Common Args (all screensavers)
     opts.optflag("h", "help", "print this help menu");
     opts.optflag("", "window", "run in a window (IGNORED)");
     opts.optflag("", "root", "run in root window (IGNORED)");
+    opts.optflag("", "fps", "show frames per second (IGNORED)");
     opts.optopt("", "window-id", "X window id number", "NUM");
+
+    // Bovine-specific args
+    opts.optflag("", "wire", "wireframe mode (IGNORED)");
+    opts.optopt("c", "count", "how many cows? (1 to 9) (IGNORED)", "NUM");
+    opts.optopt("", "delay", "inter-frame delay (0 to 100000) (IGNORED)", "NUM");
+    opts.optopt("s", "speed", "how fast? ratio, with 1.0 as normal (IGNORED)", "NUM");
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
