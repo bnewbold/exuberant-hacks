@@ -10,3 +10,4 @@ authors = ["bnewbold <bnewbold@robocracy.org>"]
 #glutin = { git = "https://github.com/bnewbold/glutin", branch = "feature-existing" }
 glium = "0.*"
 image = "0.*"
+getopts = "^0.2"
