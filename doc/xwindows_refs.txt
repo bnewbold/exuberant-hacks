@@ -1,0 +1,13 @@
+
+List of function signatures for x11-rs's xlib module:
+
+    https://github.com/Daggerbot/x11-rs/blob/master/src/xlib.rs
+
+Xlib programming manual:
+
+    https://tronche.com/gui/x/xlib/
+
+XScreensaver's "Writing new XScreenSaver modules" and FAQ:
+
+    https://github.com/Zygo/xscreensaver/blob/master2/README.hacking
+    https://www.jwz.org/xscreensaver/faq.html
