@@ -2,7 +2,7 @@
 // This file auto-generated from cow_udder.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const COW_UDDER_VERTICES: [Vertex; 1514] = [
     Vertex { position: (-2.033406, -0.91003, -0.96422),

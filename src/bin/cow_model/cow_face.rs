@@ -2,7 +2,7 @@
 // This file auto-generated from cow_face.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const COW_FACE_VERTICES: [Vertex; 335] = [
     Vertex { position: (4.897808, 1.946794, -0.628057),

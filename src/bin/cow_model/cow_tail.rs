@@ -2,7 +2,7 @@
 // This file auto-generated from cow_tail.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const COW_TAIL_VERTICES: [Vertex; 458] = [
     Vertex { position: (-3.67645, -0.551317, 0.077574),

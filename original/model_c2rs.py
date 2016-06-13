@@ -33,7 +33,7 @@ def main():
 // This file auto-generated from %s.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const %s_VERTICES: [Vertex; %d] = [
 """ % (fname, fname.upper(), len(vertices)))

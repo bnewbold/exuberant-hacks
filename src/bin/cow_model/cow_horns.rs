@@ -2,7 +2,7 @@
 // This file auto-generated from cow_horns.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const COW_HORNS_VERTICES: [Vertex; 1019] = [
     Vertex { position: (4.22473, 2.624525, -0.491916),

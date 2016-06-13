@@ -2,7 +2,7 @@
 // This file auto-generated from cow_hide.c using model_c2rs.py
 // Don't edit by hand!
 
-use cow_vertex::Vertex;
+use super::cow_vertex::Vertex;
 
 pub const COW_HIDE_VERTICES: [Vertex; 13049] = [
     Vertex { position: (2.229345, -0.992723, -0.862826),
