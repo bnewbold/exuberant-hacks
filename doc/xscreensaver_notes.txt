@@ -25,11 +25,6 @@ The code in XScreensaver "hacks" that seems to latch on to an existing window is
     https://github.com/Zygo/xscreensaver/blob/master2/hacks/screenhack.c#L872
     (possible section of xscreensaver hack code dealing with window stuff?)
 
-new plan:
-- write a function that just returns a glutin::Window based on the remote X11
-  window ID
+After figuring all this out, I found a perl equivalent:
+http://search.cpan.org/dist/OpenGL-XScreenSaver/lib/OpenGL/XScreenSaver.pm
 
-old plan:
-- provide an impl on glutin::Window which constructs a new one given a root
-  window number; just copy/paste the new() implementation for now?
-  "from_existing()"?
