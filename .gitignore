@@ -1,4 +1,6 @@
 target/
+doc/*.6
+doc/*.6.gz
 
 *.o
 *.a
