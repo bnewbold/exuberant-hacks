@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<screensaver name="exuberantplasma" _label="ExuberantPlasma" gl="yes">
+
+  <command arg="--root"/>
+
+  <number id="delay" type="slider" arg="--delay %"
+          _label="Frame rate" _low-label="Low" _high-label="High"
+          low="0" high="100000" default="30000"
+          convert="invert"/>
+
+  <boolean id="wire"    _label="Wireframe"              arg-set="--wireframe"/>
+  <boolean id="showfps" _label="Show frame rate" arg-set="--fps"/>
+
+  <xscreensaver-updater />
+
+  <_description>
+A port of classic GLSL plasma effect to Rust.
+
+A good template for basic GLSL/shader screensavers.
+  </_description>
+</screensaver>

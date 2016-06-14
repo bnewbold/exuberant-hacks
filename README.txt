@@ -56,6 +56,8 @@ You'll need to create at least three files with the same base name ("$HACK"):
 - an XML config file (configs/$HACK.xml)
 - a manpage in Markdown format (doc/$HACK.6.md)
 
+Then just add your HACK to the list in Makefile.
+
 See also XScreensaver's "Writing new XScreenSaver modules"
 
     https://github.com/Zygo/xscreensaver/blob/master2/README.hacking

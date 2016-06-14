@@ -4,7 +4,7 @@
 # This Makefile is self-documenting (via the 'help' target)
 # see: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
-HACKS=exuberantbovines
+HACKS=exuberantbovines exuberantplasma
 
 CARGO ?= cargo
 CARGO_OPTS ?=
