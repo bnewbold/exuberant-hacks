@@ -1,7 +1,5 @@
 
-#[macro_use]
 extern crate glium; 
-
 extern crate image;
 extern crate getopts;
 extern crate time;
@@ -99,7 +97,7 @@ pub fn make_display(conf: &Matches) -> glium::Display {
             glium::glutin::WindowBuilder::new()
                                          .from_existing_window(id),
         None => glium::glutin::WindowBuilder::new()
-                                             .with_title(format!("Exuberant Cow!"))
+                                             .with_title(format!("Exuberant Hack!"))
                                              .with_depth_buffer(24),
     };
     let display = win_builder.build_glium().unwrap();
