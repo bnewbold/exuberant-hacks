@@ -4,6 +4,7 @@ extern crate glium;
 
 extern crate image;
 extern crate getopts;
+extern crate time;
 
 use std::env;
 use std::process::exit;
@@ -14,7 +15,7 @@ use glium::{DisplayBuild, Display};
 pub mod util;
 
 pub trait ExuberantHack {
-    fn draw_frame(&mut self) -> Result<(), String>;
+    fn draw_frame(&mut self, t: f64) -> Result<(), String>;
     fn get_display(&self) -> &Display;
 }
 
@@ -30,7 +31,7 @@ pub fn print_usage(opts: &Options) {
 pub fn run(hack: &mut ExuberantHack, conf: &Matches) {
 
     loop {
-        hack.draw_frame().ok();
+        hack.draw_frame(time::precise_time_s()).ok();
         for ev in hack.get_display().poll_events() {
             match ev {
                 glium::glutin::Event::Closed => return,

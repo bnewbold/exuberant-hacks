@@ -11,4 +11,5 @@ authors = ["bnewbold <bnewbold@robocracy.org>"]
 glium = "0.*"
 image = "0.*"
 getopts = "^0.2"
+time = "0.1"
 

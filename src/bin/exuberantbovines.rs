@@ -12,7 +12,6 @@ use glium::Surface;
 mod cow_model;
 
 struct ExuberantBovines {
-    t: f64,
     display: glium::Display,
     program: glium::Program,
     model_vertices: Vec<glium::VertexBuffer<cow_model::Vertex>>,
@@ -92,7 +91,6 @@ impl ExuberantBovines {
         return ExuberantBovines {
             display: display,
             program: program,
-            t: 0.0,
             model_vertices: vec![face_vertices,
                                  hide_vertices,
                                  hoofs_vertices,
@@ -105,12 +103,11 @@ impl ExuberantBovines {
 
 impl ExuberantHack for ExuberantBovines {
 
-    fn draw_frame(&mut self) -> Result<(), String> {
+    fn draw_frame(&mut self, t: f64) -> Result<(), String> {
 
         let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
 
-        self.t += 0.03;
-        let z: f32 = 0.5 * self.t.sin() as f32;
+        let z: f32 = 0.5 * t.sin() as f32;
 
         // Drawing Pipeline
         let mut target = self.display.draw();
