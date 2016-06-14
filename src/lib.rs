@@ -6,6 +6,8 @@ extern crate time;
 
 use std::env;
 use std::process::exit;
+use std::thread::sleep;
+use std::time::Duration;
 use getopts::{Options, Matches};
 use glium::glutin::os::unix::WindowBuilderExt;
 use glium::{DisplayBuild, Display};
@@ -36,7 +38,7 @@ pub fn run(hack: &mut ExuberantHack, conf: &Matches) {
                 _ => ()
             }
         }
-        // XXX: sleep here for 10ms
+        sleep(Duration::from_millis(30));
     }
 }
 
