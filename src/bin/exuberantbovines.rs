@@ -1,109 +1,119 @@
 
-extern crate exuberantbovines;
+extern crate exuberant;
 extern crate getopts;
 
 #[macro_use]
 extern crate glium; 
 
-use exuberantbovines::{generic_main, util};
+use exuberant::ExuberantHack;
 use getopts::Options;
-use glium::glutin::os::unix::WindowBuilderExt;
+use glium::Surface;
 
 mod cow_model;
-    
-fn run(window_id: Option<u64>) {
 
-    use glium::{DisplayBuild, Surface};
+struct ExuberantBovines {
+    t: f64,
+    display: glium::Display,
+    program: glium::Program,
+    model_vertices: Vec<glium::VertexBuffer<cow_model::Vertex>>,
+}
+ 
+impl ExuberantBovines {
 
-    let mut t: f32 = 0.0;
-    let mut z: f32;
+    pub fn new(display: glium::Display) -> ExuberantBovines {
 
-    let win_builder: glium::glutin::WindowBuilder = match window_id {
-        Some(id) =>
-            glium::glutin::WindowBuilder::new()
-                                         .from_existing_window(id),
-        None => glium::glutin::WindowBuilder::new()
-                                             .with_title(format!("Exuberant Cow!"))
-                                             .with_depth_buffer(24),
-    };
-    let display = win_builder.build_glium().unwrap();
+        let face_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_FACE_VERTICES).unwrap();
+        let hide_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_HIDE_VERTICES).unwrap();
+        let hoofs_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_HOOFS_VERTICES).unwrap();
+        let horns_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_HORNS_VERTICES).unwrap();
+        let tail_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_TAIL_VERTICES).unwrap();
+        let udder_vertices = glium::VertexBuffer::new(
+            &display, &cow_model::COW_UDDER_VERTICES).unwrap();
 
-    let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
+        let vertex_shader_src = r#"
+            #version 140 
+            
+            uniform mat4 perspective;
+            uniform mat4 view;
+            uniform mat4 model;
+            
+            in vec3 position; 
+            in vec3 normal;
+            
+            out vec3 v_normal;
+            out vec3 v_position;
 
-    let face_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_FACE_VERTICES).unwrap();
-    let hide_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_HIDE_VERTICES).unwrap();
-    let hoofs_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_HOOFS_VERTICES).unwrap();
-    let horns_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_HORNS_VERTICES).unwrap();
-    let tail_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_TAIL_VERTICES).unwrap();
-    let udder_vertices = glium::VertexBuffer::new(
-        &display, &cow_model::COW_UDDER_VERTICES).unwrap();
+            void main() {
+                mat4 modelview = view * model;
+                v_normal = transpose(inverse(mat3(modelview))) * normal;
+                gl_Position = perspective * modelview * vec4(position, 1.0);
+                v_position = gl_Position.xyz / gl_Position.w;
+            }
+        "#; 
 
-    let vertex_shader_src = r#"
-        #version 140 
-        
-        uniform mat4 perspective;
-        uniform mat4 view;
-        uniform mat4 model;
-        
-        in vec3 position; 
-        in vec3 normal;
-        
-        out vec3 v_normal;
-        out vec3 v_position;
+        let fragment_shader_src = r#"
+            #version 140
 
-        void main() {
-            mat4 modelview = view * model;
-            v_normal = transpose(inverse(mat3(modelview))) * normal;
-            gl_Position = perspective * modelview * vec4(position, 1.0);
-            v_position = gl_Position.xyz / gl_Position.w;
-        }
-    "#; 
+            uniform vec3 u_light;
 
-    let fragment_shader_src = r#"
-        #version 140
+            in vec3 v_normal;
+            in vec3 v_position;
 
-        uniform vec3 u_light;
+            out vec4 color;
 
-        in vec3 v_normal;
-        in vec3 v_position;
+            const vec3 ambient_color = vec3(0.63, 0.43, 0.36);
+            const vec3 diffuse_color = vec3(0.5, 0.5, 0.5);
+            const vec3 specular_color = vec3(0.0, 0.0, 0.0);
 
-        out vec4 color;
+            void main() {
+                float diffuse = max(dot(normalize(v_normal), normalize(u_light)), 0.0);
 
-        const vec3 ambient_color = vec3(0.63, 0.43, 0.36);
-        const vec3 diffuse_color = vec3(0.5, 0.5, 0.5);
-        const vec3 specular_color = vec3(0.0, 0.0, 0.0);
-
-        void main() {
-            float diffuse = max(dot(normalize(v_normal), normalize(u_light)), 0.0);
-
-            vec3 camera_dir = normalize(-v_position);
-            vec3 half_direction = normalize(normalize(u_light) + camera_dir);
-            float specular = pow(max(dot(half_direction, normalize(v_normal)), 0.0), 16.);
-            color = vec4(ambient_color +
-                         diffuse * diffuse_color +
-                         specular * specular_color, 1.0);
-        }
-    "#;
+                vec3 camera_dir = normalize(-v_position);
+                vec3 half_direction = normalize(normalize(u_light) + camera_dir);
+                float specular = pow(max(dot(half_direction, normalize(v_normal)), 0.0), 16.);
+                color = vec4(ambient_color +
+                            diffuse * diffuse_color +
+                            specular * specular_color, 1.0);
+            }
+        "#;
 
 
-    let program = glium::Program::from_source(
-        &display,
-        vertex_shader_src,
-        fragment_shader_src,
-        None).unwrap();
+        let program = glium::Program::from_source(
+            &display,
+            vertex_shader_src,
+            fragment_shader_src,
+            None).unwrap();
 
-    loop {
+        return ExuberantBovines {
+            display: display,
+            program: program,
+            t: 0.0,
+            model_vertices: vec![face_vertices,
+                                 hide_vertices,
+                                 hoofs_vertices,
+                                 horns_vertices,
+                                 tail_vertices,
+                                 udder_vertices],
+        };
+    }
+}
 
-        t += 0.03;
-        z = 0.5 * t.sin();
+impl ExuberantHack for ExuberantBovines {
+
+    fn draw_frame(&mut self) -> Result<(), String> {
+
+        let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
+
+        self.t += 0.03;
+        let z: f32 = 0.5 * self.t.sin() as f32;
 
         // Drawing Pipeline
-        let mut target = display.draw();
+        let mut target = self.display.draw();
 
         let (width, height) = target.get_dimensions();
         let aspect_ratio = height as f32 / width as f32;
@@ -124,7 +134,7 @@ fn run(window_id: Option<u64>) {
 
         let light = [-1.0, 0.4, 0.9f32];
 
-        let view = util::view_matrix(&[2.0, -1.0, 1.0], &[-2.0, 1.0, 1.0], &[0.0, 1.0, 0.0]);
+        let view = exuberant::util::view_matrix(&[2.0, -1.0, 1.0], &[-2.0, 1.0, 1.0], &[0.0, 1.0, 0.0]);
         let uniforms = uniform! {
             model: [
                 [ 0.3, 0.0,  0.0,  0.0 ],
@@ -150,42 +160,36 @@ fn run(window_id: Option<u64>) {
             .. Default::default()
         };
 
-        for part_vertices in vec![&face_vertices,
-                                  &hide_vertices,
-                                  &hoofs_vertices,
-                                  &horns_vertices,
-                                  &tail_vertices,
-                                  &udder_vertices] {
+        for part_vertices in &self.model_vertices {
 
             target.draw(part_vertices,
                         &indices,
-                        &program,
+                        &self.program,
                         &uniforms,
                         &params).unwrap();
         }
 
-        target.finish().unwrap();
-
-        for ev in display.poll_events() {
-            match ev {
-                glium::glutin::Event::Closed => return,
-                _ => ()
-            }
-        }
-        // XXX: sleep here for 10ms
+        target.finish().or(Err("Failure rendering".to_string()))
     }
 
+    fn get_display(&self) -> &glium::Display {
+        &self.display
+    }
 }
 
 fn main() {
 
     let mut opts = Options::new();
-    opts.optflag("", "wire", "wireframe mode (IGNORED)");
     opts.optopt("c", "count", "how many cows? (1 to 9) (IGNORED)", "NUM");
-    opts.optopt("", "delay", "inter-frame delay (0 to 100000) (IGNORED)", "NUM");
     opts.optopt("s", "speed", "how fast? ratio, with 1.0 as normal (IGNORED)", "NUM");
+    opts.optflag("", "wireframe", "wireframe mode (IGNORED)");
 
-    let (_, window_id) = generic_main(opts);
-    run(window_id)
+    let conf = exuberant::main_helper(opts);
+    let dislpay = exuberant::make_display(&conf);
+    let mut hack = ExuberantBovines::new(dislpay);
 
+    // Here is where you would configure the hack based on command line options
+
+    // Ok, actually run it (loops forever)
+    exuberant::run(&mut hack, &conf);
 }

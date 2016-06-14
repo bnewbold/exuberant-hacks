@@ -7,6 +7,7 @@ mod cow_horns;
 mod cow_tail;
 mod cow_udder;
 
+pub use self::cow_vertex::Vertex;
 pub use self::cow_face::COW_FACE_VERTICES;
 pub use self::cow_hide::COW_HIDE_VERTICES;
 pub use self::cow_hoofs::COW_HOOFS_VERTICES;
