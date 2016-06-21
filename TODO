@@ -1,9 +1,14 @@
-- README, LICENSE
-- flip normal vectors?
-- render all parts of the cow
-- bouncy!
+
+general:
 - mouse/keyboard interaction
-- basic command line args
+- wireframe mode
+- FPS printing
+- shadertoy example program (maybe util helper?)
+
+bovines:
+- textures/colors
+- bouncy!
+- refactor code into inline routines
 
 variants:
 - zoom over a grid landscape of cows which are watching you
@@ -12,5 +17,4 @@ variants:
 - "skinless" mode
 
 later:
-- merge entire cow into a single vertexbuffer (including color)
-- abstract util stuff into a helper library
+- merge entire cow into a single vertexbuffer (including color?)
