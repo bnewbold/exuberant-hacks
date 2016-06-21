@@ -1,11 +1,12 @@
 
-extern crate exuberant;
+extern crate exuberant_hacks;
 extern crate getopts;
 
 #[macro_use]
 extern crate glium; 
 
-use exuberant::ExuberantHack;
+use exuberant_hacks::{ExuberantHack, run_hack, main_helper, make_display};
+use exuberant_hacks::util;
 use getopts::Options;
 use glium::Surface;
 
@@ -131,7 +132,7 @@ impl ExuberantHack for ExuberantBovines {
 
         let light = [-1.0, 0.4, 0.9f32];
 
-        let view = exuberant::util::view_matrix(&[2.0, -1.0, 1.0], &[-2.0, 1.0, 1.0], &[0.0, 1.0, 0.0]);
+        let view = util::view_matrix(&[2.0, -1.0, 1.0], &[-2.0, 1.0, 1.0], &[0.0, 1.0, 0.0]);
         let uniforms = uniform! {
             model: [
                 [ 0.3, 0.0,  0.0,  0.0 ],
@@ -181,12 +182,12 @@ fn main() {
     opts.optopt("s", "speed", "how fast? ratio, with 1.0 as normal (IGNORED)", "NUM");
     opts.optflag("", "wireframe", "wireframe mode (IGNORED)");
 
-    let conf = exuberant::main_helper(opts);
-    let dislpay = exuberant::make_display(&conf);
+    let conf = main_helper(opts);
+    let dislpay = make_display(&conf);
     let mut hack = ExuberantBovines::new(dislpay);
 
     // Here is where you would configure the hack based on command line options
 
     // Ok, actually run it (loops forever)
-    exuberant::run(&mut hack, &conf);
+    run_hack(&mut hack, &conf);
 }

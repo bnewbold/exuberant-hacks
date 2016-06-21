@@ -28,7 +28,7 @@ pub fn print_usage(opts: &Options) {
 }
 
 /// Executes a hack
-pub fn run(hack: &mut ExuberantHack, conf: &Matches) {
+pub fn run_hack(hack: &mut ExuberantHack, conf: &Matches) {
 
     loop {
         hack.draw_frame(time::precise_time_s()).ok();

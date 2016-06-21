@@ -1,11 +1,10 @@
 
-                 _                          _     _                _                 _ 
-  _____  ___   _| |__   ___ _ __ __ _ _ __ | |_  | |__   _____   _(_)_ __   ___  ___| |
- / _ \ \/ / | | | '_ \ / _ \ '__/ _` | '_ \| __| | '_ \ / _ \ \ / / | '_ \ / _ \/ __| |
-|  __/>  <| |_| | |_) |  __/ | | (_| | | | | |_  | |_) | (_) \ V /| | | | |  __/\__ \_|
- \___/_/\_\\__,_|_.__/ \___|_|  \__,_|_| |_|\__| |_.__/ \___/ \_/ |_|_| |_|\___||___(_)
-
-
+<pre>
+                 _                          _     _                _        _ 
+  _____  ___   _| |__   ___ _ __ __ _ _ __ | |_  | |__   __ _  ___| | _____| |
+ / _ \ \/ / | | | '_ \ / _ \ '__/ _` | '_ \| __| | '_ \ / _` |/ __| |/ / __| |
+|  __/>  <| |_| | |_) |  __/ | | (_| | | | | |_  | | | | (_| | (__|   <\__ \_|
+ \___/_/\_\\__,_|_.__/ \___|_|  \__,_|_| |_|\__| |_| |_|\__,_|\___|_|\_\___(_) </pre>
 
 ### Build Dependencies and Installation
 
@@ -44,7 +43,7 @@ As a workaround until there is a solution in upstream `glutin`, use the "depende
 
 Checkout the `feature-existing` branch from
 `https://github.com/bnewbold/glutin`, then, under this directory
-(exuberant-bovines), create a `.cargo/config` file with a path like:
+(exuberant-hacks), create a `.cargo/config` file with a path like:
 
   paths = ["/home/bnewbold/src/glutin"]
 
