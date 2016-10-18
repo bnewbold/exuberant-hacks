@@ -31,24 +31,6 @@ Then follow the directions about adding lines like the following to you
 
     GL:               exuberantbovines --root             \n\
 
-### Installing Patched glutin Library
-
-Circa June 2016, this project requires a patched version of the `glutin` window
-creation library to allow re-using an existing X Window. This is only necessary
-for integration with X Windows, but the project won't build without it.
-
-As a workaround until there is a solution in upstream `glutin`, use the 
-["dependency override"](http://doc.crates.io/specifying-dependencies.html#overriding-dependencies)
-feature of the cargo build tool.
-
-Checkout the `feature-existing` branch from
-`https://github.com/bnewbold/glutin`, then, under this directory
-(exuberant-hacks), create a `.cargo/config` file with a path like:
-
-```
-  paths = ["/home/bnewbold/src/glutin"]
-```
-
 ### Creating Your Own Hacks
 
 You'll need to create at least three files with the same base name (`$HACK`):

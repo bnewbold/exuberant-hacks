@@ -4,12 +4,11 @@ version = "0.2.0"
 authors = ["bnewbold <bnewbold@robocracy.org>"]
 
 [dependencies]
-# NB: You want the following line, but the only way to get it under
-# glium::glutin is using the ".cargo/config" file with a local checkout. See
-# README.
-#glutin = { git = "https://github.com/bnewbold/glutin", branch = "feature-existing" }
+glutin = "0.5.2"
 glium = "0.*"
 image = "0.*"
 getopts = "^0.2"
 time = "0.1"
 
+[replace]
+"glutin:0.5.2" = { git = "https://github.com/bnewbold/glutin", branch = "feature-existing" }
