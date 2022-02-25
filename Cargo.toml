@@ -2,12 +2,13 @@
 name = "exuberant_hacks"
 version = "0.2.0"
 authors = ["bnewbold <bnewbold@robocracy.org>"]
+edition = "2015"
 
 [dependencies]
 glutin = "0.5.2"
-glium = "0.*"
-image = "0.*"
-getopts = "^0.2"
+glium = "0.14"
+image = "0.10"
+getopts = "0.2"
 time = "0.1"
 
 [replace]
